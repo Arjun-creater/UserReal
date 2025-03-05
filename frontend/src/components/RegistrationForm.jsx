@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Paper from '@mui/material/Paper';
-
+import API_BASE_URL from '../config/config.js';
 import {
   TextField,
   Button,
@@ -87,7 +87,7 @@ const RegistrationForm = () => {
         dateOfBirth: new Date(formData.dateOfBirth).toISOString()
       };
 
-      const response = await axios.post('http://localhost:5000/api/users', formattedData);
+      const response = await axios.post(`${API_BASE_URL}/users`, formattedData);
       
       if (response.status === 201) {
         setSnackbar({

@@ -23,7 +23,7 @@ import {
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import axios from 'axios';
-
+import API_BASE_URL from '../config/config.js';
 const UsersList = () => {
   const [users, setUsers] = useState([]);
   const [editUser, setEditUser] = useState(null);
@@ -37,10 +37,9 @@ const UsersList = () => {
   useEffect(() => {
     fetchUsers();
   }, []);
-
   const fetchUsers = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/users');
+      const response = await axios.get(`${API_BASE_URL}/users`);
       setUsers(response.data);
     } catch (error) {
       setSnackbar({
@@ -59,7 +58,7 @@ const UsersList = () => {
   const handleUpdate = async () => {
     try {
       const { _id, ...updateData } = editUser;
-      await axios.put(`http://localhost:5000/api/users/${_id}`, updateData);
+      await axios.put(`${API_BASE_URL}/users/${_id}`, updateData);
       setOpenDialog(false);
       setSnackbar({
         open: true,
@@ -75,10 +74,10 @@ const UsersList = () => {
       });
     }
   };
-
+  
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/users/${id}`);
+      await axios.delete(`${API_BASE_URL}/users/${id}`);
       setSnackbar({
         open: true,
         message: 'User deleted successfully',
@@ -88,7 +87,7 @@ const UsersList = () => {
     } catch (error) {
       setSnackbar({
         open: true,
-        message: 'Failed to delete user',
+        message: error.response?.data?.message || 'Failed to delete user',
         severity: 'error'
       });
     }
